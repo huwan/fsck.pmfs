@@ -78,6 +78,9 @@ struct block_list {
 #define LE32(v) ((u32)(v))
 #define LE64(v) ((u64)(v))
 
+#define PMFS_SUPER_MAGIC 0xeffc
+
+
 
 static void parse_args(int argc, char **argv);
 static void usage(FILE *);
@@ -369,7 +372,7 @@ static void check_inodes(const struct pmfs_super_block *s,
     check_range(64, blocks, 1, sb.size / BLOCKSIZE - 2, "inode table blocks");
     check_range(64, blocks, 1, max_blocks, "inode table blocks");
     check(64, size, expected_size, "inode table size");
-    check(64, LE64(inode_table->i_next_truncate), 0, "truncate list");
+    // check(64, LE64(inode_table->i_next_truncate), 0, "truncate list");
 
     inode_count = (unsigned)(size / PMFS_INODE_SIZE);
     inode_link_counts = calloc(inode_count, sizeof (u16));
@@ -878,7 +881,7 @@ static void check_allocation_list(const struct pmfs_super_block *s,
             return;
     }
 
-    const struct pmfs_inode *ino = fs_base + inode_base + PMFS_BLOCKNODE_INO;
+    const struct pmfs_inode *ino = fs_base + inode_base + PMFS_BLOCKNODE_IN0;
     struct tree tree;
     unsigned n;
     u64 b;
